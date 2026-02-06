@@ -1,125 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>For My Forever</title>
-    <style>
-        :root {
-            --primary-pink: #ff4d6d;
-            --soft-pink: #ffeef0;
-        }
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #ffeef0 0%, #ffdde1 100%);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            overflow: hidden; /* Prevents scrolling when button moves */
-        }
-        .container {
-            text-align: center;
-            padding: 20px;
-            z-index: 10;
-        }
-        h1 {
-            color: #d63384;
-            font-size: 1.8rem;
-            margin-bottom: 30px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-        }
-        .btn-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-            width: 100%;
-            height: 200px;
-        }
-        button {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            border: none;
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-            touch-action: manipulation;
-        }
-        #yesBtn {
-            background-color: var(--primary-pink);
-            color: white;
-            z-index: 100;
-        }
-        #noBtn {
-            background-color: #ffffff;
-            color: #999;
-            position: absolute;
-        }
-        .celebration {
-            display: none;
-            animation: fadeIn 1s ease-in;
-        }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For You ❤️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: #0f0f14;
+      color: #fff;
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
+    }
+
+    section {
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .soft-bg {
+      background: linear-gradient(180deg, #1c1c28, #0f0f14);
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.3;
+      margin-bottom: 16px;
+    }
+
+    p {
+      font-size: 18px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .hint {
+      position: absolute;
+      bottom: 30px;
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    /* Proposal section */
+    .proposal {
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+
+    .buttons {
+      position: relative;
+      width: 100%;
+      height: 200px;
+    }
+
+    .yes-btn {
+      background: #ff4d6d;
+      border: none;
+      border-radius: 14px;
+      padding: 16px 28px;
+      font-size: 20px;
+      color: white;
+      cursor: pointer;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .no-btn {
+      position: absolute;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 20px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .confetti {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+    }
+  </style>
 </head>
+
 <body>
 
-    <div class="container" id="main-content">
-        <div id="image-placeholder">❤️</div>
-        <h1>Will you be mine forever?</h1>
-        <div class="btn-container">
-            <button id="yesBtn" onclick="showLove()">YES</button>
-            <button id="noBtn" ontouchstart="moveButton()" onclick="moveButton()">No</button>
-        </div>
+  <!-- SECTION 1 -->
+  <section class="soft-bg">
+    <div>
+      <h1>It all started<br>with a simple hello…</h1>
+      <div class="hint">↓ swipe</div>
     </div>
+  </section>
 
-    <div class="container celebration" id="success-msg">
-        <h1>💍 I love you! ❤️</h1>
-        <p>Best decision ever.</p>
+  <!-- SECTION 2 -->
+  <section>
+    <div>
+      <h1>Somewhere along the way,</h1>
+      <p>you became my calm,<br>my favorite place to be.</p>
     </div>
+  </section>
 
-    <script>
-        let yesSize = 1.2;
-        let noSize = 1.2;
+  <!-- SECTION 3 -->
+  <section class="soft-bg">
+    <div>
+      <h1>Every version of my future</h1>
+      <p>has one thing in common.<br><br><strong>You.</strong> ❤️</p>
+    </div>
+  </section>
 
-        function moveButton() {
-            const noBtn = document.getElementById('noBtn');
-            const yesBtn = document.getElementById('yesBtn');
-            
-            // 1. Move the No button
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-            
-            noBtn.style.position = 'fixed';
-            noBtn.style.left = x + 'px';
-            noBtn.style.top = y + 'px';
+  <!-- SECTION 4 -->
+  <section>
+    <div>
+      <h1>And that brings me</h1>
+      <p>to the easiest question<br>I’ve ever had to ask…</p>
+    </div>
+  </section>
 
-            // 2. Make Yes bigger and No smaller
-            yesSize += 0.2;
-            noSize -= 0.1;
-            yesBtn.style.transform = `scale(${yesSize})`;
-            noBtn.style.transform = `scale(${noSize})`;
+  <!-- SECTION 5: PROPOSAL -->
+  <section class="soft-bg proposal">
+    <h1>Will you marry me? 💍</h1>
 
-            // 3. Change text if she keeps trying
-            if(noSize < 0.6) {
-                noBtn.innerHTML = "Wait, what?";
-            }
-        }
+    <div class="buttons" id="buttonArea">
+      <button class="yes-btn" onclick="sayYes()">YES ❤️</button>
+      <button class="no-btn" id="noBtn">no</button>
+    </div>
+  </section>
 
-        function showLove() {
-            document.getElementById('main-content').style.display = 'none';
-            document.getElementById('success-msg').style.display = 'block';
-            // Simple visual "pop"
-            document.body.style.background = "#ff4d6d";
-            document.getElementById('success-msg').style.color = "white";
-            document.querySelector('#success-msg h1').style.color = "white";
-        }
-    </script>
+  <canvas class="confetti" id="confetti"></canvas>
+
+  <script>
+    const noBtn = document.getElementById("noBtn");
+    const area = document.getElementById("buttonArea");
+    let attempts = 0;
+
+    function moveNoButton() {
+      const areaRect = area.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = areaRect.width - btnRect.width;
+      const maxY = areaRect.height - btnRect.height;
+
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
+
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+      attempts++;
+
+      if (attempts === 3) noBtn.textContent = "nice try 😄";
+      if (attempts === 5) noBtn.textContent = "not happening";
+      if (attempts === 7) noBtn.style.opacity = "0";
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    function sayYes() {
+      startConfetti();
+      document.querySelector(".proposal h1").textContent =
+        "You just made me the happiest person alive ❤️";
+      area.style.display = "none";
+    }
+
+    /* Simple confetti */
+    function startConfetti() {
+      const canvas = document.getElementById("confetti");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const pieces = Array.from({ length: 150 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 10 + 5,
+        color: `hsl(${Math.random() * 360},100%,70%)`
+      }));
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          p.y += p.d;
+          if (p.y > canvas.height) p.y = -10;
+        });
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+  </script>
+
 </body>
 </html>
