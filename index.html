@@ -26,7 +26,7 @@
         overflow: hidden;
     }
 
-    /* --- ENTRY SCREEN (NEW) --- */
+    /* --- ENTRY SCREEN --- */
     #entry-screen {
         position: fixed;
         top: 0;
@@ -122,12 +122,12 @@
       background-image: url('3rd.jpeg');
     }
     #section4 {
-      background-image: url('4th.jpeg');
+      background-image: url('4th.jpg');
     }
     
     /* Proposal Section */
     .proposal-section {
-        background-image: url('4th.jpeg');
+        background-image: url('4th.jpg');
     }
     
     h1 {
@@ -208,6 +208,30 @@
       transition: all 0.2s ease;
     }
 
+    /* --- RESTART BUTTON (Hidden Initially) --- */
+    .restart-area {
+        display: none; /* Hidden by default */
+        margin-top: 30px;
+        animation: fadeIn 2s forwards;
+    }
+    
+    .restart-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: rgba(255, 255, 255, 0.7);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
     /* --- FLOATING HEARTS --- */
     .heart-container {
       position: fixed;
@@ -277,6 +301,7 @@
     <h2>For Mitthu...</h2>
     <button class="enter-btn" onclick="enterSite()">Click here baby</button>
 </div>
+
 <button id="musicToggle" aria-label="Toggle music">
   🎵
 </button>
@@ -317,6 +342,11 @@
         <button class="yes-btn" onclick="sayYes()" id="yesBtn">YES ❤️</button>
         <button class="no-btn" id="noBtn">no 💔</button>
       </div>
+
+      <div class="restart-area" id="restartArea">
+        <button class="restart-btn" onclick="reloadPage()">↻ Replay</button>
+      </div>
+
     </div>
   </section>
 
@@ -330,13 +360,24 @@
 
   <script>
 
+// --- FIX FOR SCROLL POSITION ---
+    // This ensures that when the page reloads, it starts at the top, 
+    // instead of remembering the scroll position at the bottom.
+    if (history.scrollRestoration) {
+        history.scrollRestoration = 'manual';
+    } else {
+        window.onbeforeunload = function () {
+            window.scrollTo(0, 0);
+        }
+    }
+
     const music = document.getElementById("bgMusic");
     const toggle = document.getElementById("musicToggle");
     const proposalSection = document.getElementById("finalSection");
     const statusMsg = document.getElementById("statusMessage");
     const entryScreen = document.getElementById("entry-screen");
 
-    // --- NEW: ENTER SITE LOGIC ---
+    // --- ENTER SITE LOGIC ---
     function enterSite() {
         // 1. Play Music
         music.volume = 0.3;
@@ -534,14 +575,30 @@
     /* --- 4. CONFETTI LOGIC --- */
     function sayYes() {
       clearInterval(heartInterval);
-	document.getElementById("tellme").remove();
+      const tellme = document.getElementById("tellme");
+      if(tellme) tellme.remove();
+      
       const heartContainer = document.getElementById("heartContainer");
       if (heartContainer) heartContainer.remove();
+      
       statusMsg.style.opacity = "0";
+      
       startConfetti();
+      
       document.querySelector("#typewriterText").textContent =
         "I love you, my future wife ❤️";
       area.style.display = "none";
+
+      // SHOW RESTART BUTTON AFTER 4 SECONDS
+      setTimeout(() => {
+          const restartArea = document.getElementById("restartArea");
+          restartArea.style.display = "block";
+      }, 2700);
+    }
+    
+    // RESTART FUNCTION
+    function reloadPage() {
+        location.reload(); // Reloads the page, resetting to entry screen & stopping music
     }
 
     function startConfetti() {
@@ -554,7 +611,8 @@
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         r: Math.random() * 6 + 2,
-        d: Math.random() * 5 + 2,
+        // CHANGED SPEED HERE: Much slower fall (1 to 4)
+        d: Math.random() * 3 + 1, 
         color: `hsl(${Math.random() * 360},100%,70%)`
       }));
 
