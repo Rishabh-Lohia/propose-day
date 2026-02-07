@@ -140,10 +140,10 @@
 
   <!-- SECTION 5: PROPOSAL -->
   <section class="soft-bg proposal">
-    <h1>Will you marry me? 💍</h1>
+    <h1>Will you be my forever valentine? </h1>
 
     <div class="buttons" id="buttonArea">
-      <button class="yes-btn" onclick="sayYes()">YES ❤️</button>
+      <button class="yes-btn" onclick="sayYes()" id="yesBtn">YES ❤️</button>
       <button class="no-btn" id="noBtn">no</button>
     </div>
   </section>
@@ -152,27 +152,79 @@
 
   <script>
     const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn")
     const area = document.getElementById("buttonArea");
     let attempts = 0;
 
-    function moveNoButton() {
-      const areaRect = area.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+   
+function moveNoButton() {
+  
+  const containerWidth = area.clientWidth;
+  const containerHeight = area.clientHeight;
+  
+  // Get button dimensions (offsetWidth includes borders/padding)
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
 
-      const maxX = areaRect.width - btnRect.width;
-      const maxY = areaRect.height - btnRect.height;
+// 1. Get Yes button position relative to the container
+  // We use getBoundingClientRect to get absolute viewport coords, then subtract 
+  // the container's coords to get the relative offset (left/top) inside the area.
+  const areaRect = area.getBoundingClientRect();
+  const yesRect = yesBtn.getBoundingClientRect();
+  
+  const yesLeft = yesRect.left - areaRect.left;
+  const yesTop = yesRect.top - areaRect.top;
+  const yesRight = yesLeft + yesRect.width;
+  const yesBottom = yesTop + yesRect.height;
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+  // 2. Calculate the maximum movable area
+  const maxX = containerWidth - btnWidth;
+  const maxY = containerHeight - btnHeight;
 
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  let newX, newY;
+  let isOverlapping = false;
+  let safetyCounter = 0;
 
-      attempts++;
+  // 2. Loop to find a safe spot
+  do {
+    newX = Math.random() * maxX;
+    newY = Math.random() * maxY;
 
-      if (attempts === 3) noBtn.textContent = "nice try 😄";
-      if (attempts === 5) noBtn.textContent = "not happening";
-      if (attempts === 7) noBtn.style.opacity = "0";
-    }
+    // Define the rectangle for the proposed new spot
+    const noLeft = newX;
+    const noRight = newX + btnWidth;
+    const noTop = newY;
+    const noBottom = newY + btnHeight;
+
+    // 3. Collision Detection (Axis-Aligned Bounding Box)
+    // Checks if the two rectangles intersect
+    isOverlapping = (
+      noLeft < yesRight &&
+      noRight > yesLeft &&
+      noTop < yesBottom &&
+      noBottom > yesTop
+    );
+
+    safetyCounter++;
+    // Break after 50 tries to prevent infinite loops if the screen is too small
+  } while (isOverlapping && safetyCounter < 50);
+
+  // 4. Apply the position
+  // IMPORTANT: We switch from 'transform' to 'left/top' for absolute coordinates
+  noBtn.style.position = "absolute"; 
+  noBtn.style.left = `${newX}px`;
+  noBtn.style.top = `${newY
+}px`;
+  
+  // Clear transform to prevent conflicts if CSS had it
+  noBtn.style.transform = "none";
+
+  attempts++;
+
+  if (attempts === 3) noBtn.textContent = "nice try 😄";
+  if (attempts === 5) noBtn.textContent = "not happening";
+  if (attempts === 7) noBtn.style.opacity = "0";
+}
 
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
