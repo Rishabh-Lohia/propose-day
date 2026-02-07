@@ -204,11 +204,33 @@ background-image: url('4th.jpg');
   text-shadow: 0 0 10px rgba(0,0,0,0.8);
   z-index: 10;
 }
+#musicToggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  font-size: 20px;
+  backdrop-filter: blur(6px);
+  z-index: 1000;
+  cursor: pointer;
+}
+
+#musicToggle.playing {
+  background: rgba(255, 77, 109, 0.9);
+}
+
   </style>
 </head>
 
 <body>
-
+<button id="musicToggle" aria-label="Toggle music">
+  🎵
+</button>
   <div class="heart-container" id="heartContainer"></div>
 
   <section id="section1">
@@ -252,8 +274,74 @@ You have made my life beautiful....
   </section>
 <div id="statusMessage" style="position: fixed; bottom: 20px; width: 100%; text-align: center; color: #ff4d6d; font-weight: bold; font-size: 18px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;"></div>
   <canvas class="confetti" id="confetti"></canvas>
-
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
   <script>
+
+const music = document.getElementById("bgMusic");
+const toggle = document.getElementById("musicToggle");
+const proposalSection = document.getElementById("finalSection");
+
+let hasSwelled = false;
+
+const observer1 = new IntersectionObserver(
+  (entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !hasSwelled) {
+        swellMusic();
+        hasSwelled = true;
+      }
+    });
+  },
+  { threshold: 0.6 }
+);
+
+observer1.observe(proposalSection);
+
+function swellMusic() {
+  let vol = music.volume;        // current volume (e.g. 0.3)
+  const target = 0.5;            // peak volume for proposal
+  const step = 0.01;             // smoothness
+  const interval = 100;          // speed (ms)
+
+  const swell = setInterval(() => {
+    if (vol < target) {
+      vol += step;
+      music.volume = Math.min(vol, target);
+    } else {
+      clearInterval(swell);
+    }
+  }, interval);
+}
+
+let hasStarted = false;
+
+function startMusic() {
+  if (!hasStarted) {
+   music.volume = 0.4;
+music.play().catch(() => {});
+toggle.classList.add("playing");
+hasStarted = true;
+  }
+}
+
+toggle.addEventListener("click", (e) => {
+  e.stopPropagation();
+  if (music.paused) {
+    music.play();
+    toggle.classList.add("playing");
+  } else {
+    music.pause();
+    toggle.classList.remove("playing");
+  }
+});
+
+/* Start music on first interaction anywhere */
+document.body.addEventListener("click", startMusic, { once: true });
+document.body.addEventListener("touchstart", startMusic, { once: true });
+
+
     /* --- 1. FLOATING HEARTS LOGIC --- */
     function createHeart() {
       const heart = document.createElement("div");
