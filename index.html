@@ -274,8 +274,8 @@
 <body class="locked">
 
 <div id="entry-screen">
-    <h2>I have something to show you...</h2>
-    <button class="enter-btn" onclick="enterSite()">Tap to Open ❤️</button>
+    <h2>For Mitthu...</h2>
+    <button class="enter-btn" onclick="enterSite()">Click here baby</button>
 </div>
 <button id="musicToggle" aria-label="Toggle music">
   🎵
@@ -310,7 +310,7 @@
 
   <section class="proposal-section" id="finalSection">
     <div class="content-wrap">
-        <p>So tell me, cutie...</p>
+        <p id="tellme">So tell me, cutie...</p>
       <h1 id="typewriterText"></h1>
       
       <div class="buttons" id="buttonArea">
@@ -534,12 +534,13 @@
     /* --- 4. CONFETTI LOGIC --- */
     function sayYes() {
       clearInterval(heartInterval);
+	document.getElementById("tellme").remove();
       const heartContainer = document.getElementById("heartContainer");
       if (heartContainer) heartContainer.remove();
       statusMsg.style.opacity = "0";
       startConfetti();
       document.querySelector("#typewriterText").textContent =
-        "You just made me the happiest person alive ❤️";
+        "I love you, my future wife ❤️";
       area.style.display = "none";
     }
 
@@ -553,7 +554,7 @@
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
         r: Math.random() * 6 + 2,
-        d: Math.random() * 10 + 5,
+        d: Math.random() * 5 + 2,
         color: `hsl(${Math.random() * 360},100%,70%)`
       }));
 
