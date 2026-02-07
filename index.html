@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>For You ❤️</title>
+  <title>For my cutie ❤️❤️</title>
 
   <style>
     * {
@@ -62,23 +62,32 @@
     /* --- SPECIFIC BACKGROUND IMAGES --- */
     /* REPLACE THESE URLS WITH YOUR PHOTOS */
     #section1 {
-      background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1920&auto=format&fit=crop'); 
+      background-image: url('1st.jpeg'); 
     }
     #section2 {
-      background-image: url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1920&auto=format&fit=crop');
+      background-image: url('2nd.jpeg');
     }
     #section3 {
-      background-image: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1920&auto=format&fit=crop');
+      background-image: url('3rd.jpeg');
     }
     #section4 {
-      background-image: url('https://images.unsplash.com/photo-1522673607200-1645062cd58c?q=80&w=1920&auto=format&fit=crop');
+      background-image: url('4th.jpg');
     }
     
     /* Proposal Section - slightly darker bg or a specific photo */
     .proposal-section {
-      background: linear-gradient(180deg, #1c1c28, #0f0f14);
+      
+background-image: url('4th.jpg');
     }
-    .proposal-section::before { display: none; } /* No overlay needed if using gradient */
+    .proposal-section::before { content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6); /* Adjust darkness here */
+      z-index: 1;
+ } /* No overlay needed if using gradient */
 
     h1 {
       font-size: 32px;
@@ -191,6 +200,10 @@
       pointer-events: none;
       z-index: 999;
     }
+#statusMessage {
+  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  z-index: 10;
+}
   </style>
 </head>
 
@@ -200,43 +213,44 @@
 
   <section id="section1">
     <div class="content-wrap">
-      <h1>We started as strangers.<br> Now you are my home, my everything.</h1>
+      <h1>We started as strangers.</h1>
     </div>
     <div class="hint">↓ swipe</div>
   </section>
 
   <section id="section2">
     <div class="content-wrap">
-      <h1>You are the greatest gift life has given me</h1>
-      <p></p>
+      <h1>Now you are my life, my heart, my everything.</h1>
+      <p>
+
+If my day doesn't start and end along with you, it is a wasted day...<br>
+All I think about is when I'll be with you again...<br>
+You have made my life beautiful....
+</p>
     </div>
   </section>
 
   <section id="section3">
     <div class="content-wrap">
-      <h1>Every version of my future</h1>
-      <p>has one thing in common.<br><br><strong>You.</strong> ❤️</p>
+      <p>My greatest desire is to keep you smiling and happy, baby</p>
+      <h1> Cannot wait for the rest of our lives together</h1>	
     </div>
   </section>
 
-  <section id="section4">
-    <div class="content-wrap">
-      <h1>And that brings me</h1>
-      <p>to the easiest question<br>I’ve ever had to ask…</p>
-    </div>
-  </section>
+  
 
   <section class="proposal-section" id="finalSection">
     <div class="content-wrap">
+<p>So tell me, cutie...</p>
       <h1 id="typewriterText"></h1>
       
       <div class="buttons" id="buttonArea">
         <button class="yes-btn" onclick="sayYes()" id="yesBtn">YES ❤️</button>
-        <button class="no-btn" id="noBtn">no</button>
+        <button class="no-btn" id="noBtn">no 💔</button>
       </div>
     </div>
   </section>
-
+<div id="statusMessage" style="position: fixed; bottom: 20px; width: 100%; text-align: center; color: #ff4d6d; font-weight: bold; font-size: 18px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;"></div>
   <canvas class="confetti" id="confetti"></canvas>
 
   <script>
@@ -263,6 +277,17 @@
     // Create a heart every 300ms
    let heartInterval = setInterval(createHeart, 300);
 
+const statusMsg = document.getElementById("statusMessage");
+    const messages = [
+      "Please try again! 😉",
+      "Ye kya ho rha hai❓🤔",
+      "Lagta hai no button mein koi technical problem hai...",
+      "Itna no click karne ki try mat karo🙄",
+      "Itni mehnat no karne mein 💔 ",
+      "Still no? Really?",
+      "Natak chhoro, Just click YES already!!!!!!!",
+      "Natak chhoro, Just click YES already!!!!!!! ❤️"
+    ];
 
     /* --- 2. TYPEWRITER EFFECT --- */
     const textToType = "Will you be my forever valentine? ❤️";
@@ -343,11 +368,19 @@
       noBtn.style.left = `${newX}px`;
       noBtn.style.top = `${newY}px`;
       noBtn.style.transform = "none";
-
+      statusMsg.style.opacity = "1";
+      // Cycle through messages based on attempts
+      const msgIndex = Math.min(attempts, messages.length - 1);
+      statusMsg.textContent = messages[msgIndex];
+      
       attempts++;
+
+      // Make the button fade out if she's too good at chasing it (optional)
+      if (attempts > 10) noBtn.style.opacity = "0.2";
+/*      attempts++;
       if (attempts === 3) noBtn.textContent = "nice try 😄";
       if (attempts === 5) noBtn.textContent = "not happening";
-      if (attempts === 7) noBtn.style.opacity = "0";
+      if (attempts === 7) noBtn.style.opacity = "0";*/
     }
 
     noBtn.addEventListener("mouseenter", moveNoButton);
