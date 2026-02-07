@@ -18,52 +18,114 @@
       color: #fff;
       scroll-snap-type: y mandatory;
       overflow-y: scroll;
+      overflow-x: hidden;
     }
 
+    /* --- PARALLAX SECTIONS --- */
     section {
       height: 100vh;
+      width: 100%;
       scroll-snap-align: start;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
       text-align: center;
+      position: relative;
+      /* Parallax Magic */
+      background-attachment: fixed;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
     }
 
-    .soft-bg {
+    /* Dark overlay to make text readable on top of photos */
+    section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.6); /* Adjust darkness here */
+      z-index: 1;
+    }
+
+    /* Content wrapper to sit above the overlay */
+    .content-wrap {
+      z-index: 3;
+      padding: 20px;
+      max-width: 600px;
+	position: relative;
+    }
+
+    /* --- SPECIFIC BACKGROUND IMAGES --- */
+    /* REPLACE THESE URLS WITH YOUR PHOTOS */
+    #section1 {
+      background-image: url('https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=1920&auto=format&fit=crop'); 
+    }
+    #section2 {
+      background-image: url('https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?q=80&w=1920&auto=format&fit=crop');
+    }
+    #section3 {
+      background-image: url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=1920&auto=format&fit=crop');
+    }
+    #section4 {
+      background-image: url('https://images.unsplash.com/photo-1522673607200-1645062cd58c?q=80&w=1920&auto=format&fit=crop');
+    }
+    
+    /* Proposal Section - slightly darker bg or a specific photo */
+    .proposal-section {
       background: linear-gradient(180deg, #1c1c28, #0f0f14);
     }
+    .proposal-section::before { display: none; } /* No overlay needed if using gradient */
 
     h1 {
       font-size: 32px;
       line-height: 1.3;
       margin-bottom: 16px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
     p {
       font-size: 18px;
       line-height: 1.6;
       opacity: 0.9;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
     }
 
     .hint {
       position: absolute;
       bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
       font-size: 14px;
-      opacity: 0.6;
+      opacity: 0.8;
+      animation: bounce 2s infinite;
+      z-index: 3;
     }
 
-    /* Proposal section */
-    .proposal {
-      flex-direction: column;
-      gap: 24px;
-      position: relative;
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {transform: translateX(-50%) translateY(0);}
+      40% {transform: translateX(-50%) translateY(-10px);}
+      60% {transform: translateX(-50%) translateY(-5px);}
     }
 
+    /* --- TYPEWRITER CURSOR --- */
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      background-color: #ff4d6d;
+      animation: blink 1s infinite;
+    }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+    /* --- PROPOSAL BUTTONS --- */
     .buttons {
       position: relative;
       width: 100%;
       height: 200px;
+      margin-top: 20px;
     }
 
     .yes-btn {
@@ -75,6 +137,7 @@
       color: white;
       cursor: pointer;
       animation: pulse 1.8s infinite;
+      box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
     }
 
     @keyframes pulse {
@@ -92,7 +155,34 @@
       border-radius: 20px;
       font-size: 14px;
       cursor: pointer;
-      transition: transform 0.2s ease;
+      transition: all 0.2s ease;
+    }
+
+    /* --- FLOATING HEARTS --- */
+    .heart-container {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2; /* Behind text but visible */
+      overflow: hidden;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      color: rgba(255, 77, 109, 0.6);
+      animation: floatUp 6s linear forwards;
+      font-size: 20px;
+	text-shadow: 0 0 5px rgba(255, 77, 109, 0.4);
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) scale(1); opacity: 0; }
+      10% { opacity: 0.8; }
+      100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
     }
 
     .confetti {
@@ -106,137 +196,172 @@
 
 <body>
 
-  <!-- SECTION 1 -->
-  <section class="soft-bg">
-    <div>
-      <h1>It all started<br>with a simple hello…</h1>
-      <div class="hint">↓ swipe</div>
+  <div class="heart-container" id="heartContainer"></div>
+
+  <section id="section1">
+    <div class="content-wrap">
+      <h1>We started as strangers.<br> Now you are my home, my everything.</h1>
+    </div>
+    <div class="hint">↓ swipe</div>
+  </section>
+
+  <section id="section2">
+    <div class="content-wrap">
+      <h1>You are the greatest gift life has given me</h1>
+      <p></p>
     </div>
   </section>
 
-  <!-- SECTION 2 -->
-  <section>
-    <div>
-      <h1>Somewhere along the way,</h1>
-      <p>you became my calm,<br>my favorite place to be.</p>
-    </div>
-  </section>
-
-  <!-- SECTION 3 -->
-  <section class="soft-bg">
-    <div>
+  <section id="section3">
+    <div class="content-wrap">
       <h1>Every version of my future</h1>
       <p>has one thing in common.<br><br><strong>You.</strong> ❤️</p>
     </div>
   </section>
 
-  <!-- SECTION 4 -->
-  <section>
-    <div>
+  <section id="section4">
+    <div class="content-wrap">
       <h1>And that brings me</h1>
       <p>to the easiest question<br>I’ve ever had to ask…</p>
     </div>
   </section>
 
-  <!-- SECTION 5: PROPOSAL -->
-  <section class="soft-bg proposal">
-    <h1>Will you be my forever valentine? </h1>
-
-    <div class="buttons" id="buttonArea">
-      <button class="yes-btn" onclick="sayYes()" id="yesBtn">YES ❤️</button>
-      <button class="no-btn" id="noBtn">no</button>
+  <section class="proposal-section" id="finalSection">
+    <div class="content-wrap">
+      <h1 id="typewriterText"></h1>
+      
+      <div class="buttons" id="buttonArea">
+        <button class="yes-btn" onclick="sayYes()" id="yesBtn">YES ❤️</button>
+        <button class="no-btn" id="noBtn">no</button>
+      </div>
     </div>
   </section>
 
   <canvas class="confetti" id="confetti"></canvas>
 
   <script>
+    /* --- 1. FLOATING HEARTS LOGIC --- */
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.innerHTML = "❤";
+      
+      // Randomize position and size
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = Math.random() * 24 + 15 + "px";
+      
+      // Randomize animation speed
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+      
+      document.getElementById("heartContainer").appendChild(heart);
+      
+      // Remove heart after animation
+      setTimeout(() => {
+        heart.remove();
+      }, 7000);
+    }
+    // Create a heart every 300ms
+   let heartInterval = setInterval(createHeart, 300);
+
+
+    /* --- 2. TYPEWRITER EFFECT --- */
+    const textToType = "Will you be my forever valentine? ❤️";
+    const typeWriterElement = document.getElementById("typewriterText");
+    let i = 0;
+    let hasTyped = false;
+
+    // The typing function
+    function typeWriter() {
+      if (i < textToType.length) {
+        typeWriterElement.innerHTML += textToType.charAt(i);
+        i++;
+        setTimeout(typeWriter, 50); // Speed of typing
+      } else {
+        // Remove cursor blink effect after typing is done (optional)
+        typeWriterElement.style.borderRight = "none";
+      }
+    }
+
+    // Use Intersection Observer to trigger typing only when section is visible
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasTyped) {
+          hasTyped = true;
+          typeWriter();
+        }
+      });
+    }, { threshold: 0.5 });
+
+    observer.observe(document.getElementById("finalSection"));
+
+
+    /* --- 3. RUNAWAY BUTTON LOGIC --- */
     const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn")
+    const yesBtn = document.getElementById("yesBtn");
     const area = document.getElementById("buttonArea");
     let attempts = 0;
 
-   
-function moveNoButton() {
-  
-  const containerWidth = area.clientWidth;
-  const containerHeight = area.clientHeight;
-  
-  // Get button dimensions (offsetWidth includes borders/padding)
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
+    function moveNoButton() {
+      const containerWidth = area.clientWidth;
+      const containerHeight = area.clientHeight;
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+      
+      const areaRect = area.getBoundingClientRect();
+      const yesRect = yesBtn.getBoundingClientRect();
+      const yesLeft = yesRect.left - areaRect.left;
+      const yesTop = yesRect.top - areaRect.top;
+      const yesRight = yesLeft + yesRect.width;
+      const yesBottom = yesTop + yesRect.height;
 
-// 1. Get Yes button position relative to the container
-  // We use getBoundingClientRect to get absolute viewport coords, then subtract 
-  // the container's coords to get the relative offset (left/top) inside the area.
-  const areaRect = area.getBoundingClientRect();
-  const yesRect = yesBtn.getBoundingClientRect();
-  
-  const yesLeft = yesRect.left - areaRect.left;
-  const yesTop = yesRect.top - areaRect.top;
-  const yesRight = yesLeft + yesRect.width;
-  const yesBottom = yesTop + yesRect.height;
+      const maxX = containerWidth - btnWidth;
+      const maxY = containerHeight - btnHeight;
 
-  // 2. Calculate the maximum movable area
-  const maxX = containerWidth - btnWidth;
-  const maxY = containerHeight - btnHeight;
+      let newX, newY;
+      let isOverlapping = false;
+      let safetyCounter = 0;
 
-  let newX, newY;
-  let isOverlapping = false;
-  let safetyCounter = 0;
+      do {
+        newX = Math.random() * maxX;
+        newY = Math.random() * maxY;
 
-  // 2. Loop to find a safe spot
-  do {
-    newX = Math.random() * maxX;
-    newY = Math.random() * maxY;
+        const noLeft = newX;
+        const noRight = newX + btnWidth;
+        const noTop = newY;
+        const noBottom = newY + btnHeight;
 
-    // Define the rectangle for the proposed new spot
-    const noLeft = newX;
-    const noRight = newX + btnWidth;
-    const noTop = newY;
-    const noBottom = newY + btnHeight;
+        isOverlapping = (
+          noLeft < yesRight &&
+          noRight > yesLeft &&
+          noTop < yesBottom &&
+          noBottom > yesTop
+        );
+        safetyCounter++;
+      } while (isOverlapping && safetyCounter < 50);
 
-    // 3. Collision Detection (Axis-Aligned Bounding Box)
-    // Checks if the two rectangles intersect
-    isOverlapping = (
-      noLeft < yesRight &&
-      noRight > yesLeft &&
-      noTop < yesBottom &&
-      noBottom > yesTop
-    );
+      noBtn.style.position = "absolute"; 
+      noBtn.style.left = `${newX}px`;
+      noBtn.style.top = `${newY}px`;
+      noBtn.style.transform = "none";
 
-    safetyCounter++;
-    // Break after 50 tries to prevent infinite loops if the screen is too small
-  } while (isOverlapping && safetyCounter < 50);
-
-  // 4. Apply the position
-  // IMPORTANT: We switch from 'transform' to 'left/top' for absolute coordinates
-  noBtn.style.position = "absolute"; 
-  noBtn.style.left = `${newX}px`;
-  noBtn.style.top = `${newY
-}px`;
-  
-  // Clear transform to prevent conflicts if CSS had it
-  noBtn.style.transform = "none";
-
-  attempts++;
-
-  if (attempts === 3) noBtn.textContent = "nice try 😄";
-  if (attempts === 5) noBtn.textContent = "not happening";
-  if (attempts === 7) noBtn.style.opacity = "0";
-}
+      attempts++;
+      if (attempts === 3) noBtn.textContent = "nice try 😄";
+      if (attempts === 5) noBtn.textContent = "not happening";
+      if (attempts === 7) noBtn.style.opacity = "0";
+    }
 
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
 
+
+    /* --- 4. CONFETTI LOGIC --- */
     function sayYes() {
       startConfetti();
-      document.querySelector(".proposal h1").textContent =
+      document.querySelector("#typewriterText").textContent =
         "You just made me the happiest person alive ❤️";
       area.style.display = "none";
     }
 
-    /* Simple confetti */
     function startConfetti() {
       const canvas = document.getElementById("confetti");
       const ctx = canvas.getContext("2d");
