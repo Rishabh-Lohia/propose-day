@@ -282,13 +282,15 @@ You have made my life beautiful....
 const music = document.getElementById("bgMusic");
 const toggle = document.getElementById("musicToggle");
 const proposalSection = document.getElementById("finalSection");
+const statusMsg = document.getElementById("statusMessage");
 
 let hasSwelled = false;
+let hasStarted = false;
 
-const observer1 = new IntersectionObserver(
+const observerMusic = new IntersectionObserver(
   (entries) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting && !hasSwelled) {
+      if (entry.isIntersecting && !hasSwelled && hasStarted) {
         swellMusic();
         hasSwelled = true;
       }
@@ -297,12 +299,12 @@ const observer1 = new IntersectionObserver(
   { threshold: 0.6 }
 );
 
-observer1.observe(proposalSection);
+observerMusic.observe(proposalSection);
 
 function swellMusic() {
   let vol = music.volume;        // current volume (e.g. 0.3)
-  const target = 0.5;            // peak volume for proposal
-  const step = 0.01;             // smoothness
+  const target = 0.7;            // peak volume for proposal
+  const step = 0.02;             // smoothness
   const interval = 100;          // speed (ms)
 
   const swell = setInterval(() => {
@@ -315,11 +317,11 @@ function swellMusic() {
   }, interval);
 }
 
-let hasStarted = false;
+
 
 function startMusic() {
   if (!hasStarted) {
-   music.volume = 0.4;
+   music.volume = 0.3;
 music.play().catch(() => {});
 toggle.classList.add("playing");
 hasStarted = true;
@@ -337,9 +339,11 @@ toggle.addEventListener("click", (e) => {
   }
 });
 
-/* Start music on first interaction anywhere */
+/* Start music on first interaction anywhere 
 document.body.addEventListener("click", startMusic, { once: true });
-document.body.addEventListener("touchstart", startMusic, { once: true });
+document.body.addEventListener("touchstart", startMusic, { once: true });*/
+document.addEventListener("click", startMusic, { once: true });
+document.addEventListener("touchstart", startMusic, { once: true });
 
 
     /* --- 1. FLOATING HEARTS LOGIC --- */
@@ -365,7 +369,7 @@ document.body.addEventListener("touchstart", startMusic, { once: true });
     // Create a heart every 300ms
    let heartInterval = setInterval(createHeart, 300);
 
-const statusMsg = document.getElementById("statusMessage");
+
     const messages = [
       "Please try again! 😉",
       "Ye kya ho rha hai❓🤔",
@@ -477,6 +481,10 @@ const statusMsg = document.getElementById("statusMessage");
 
     /* --- 4. CONFETTI LOGIC --- */
     function sayYes() {
+clearInterval(heartInterval);
+      const heartContainer = document.getElementById("heartContainer");
+      if (heartContainer) heartContainer.remove();
+statusMsg.style.opacity = "0";
       startConfetti();
       document.querySelector("#typewriterText").textContent =
         "You just made me the happiest person alive ❤️";
