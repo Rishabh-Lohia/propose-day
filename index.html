@@ -145,14 +145,15 @@
     }
 
     .hint {
-      position: absolute;
-      bottom: 60px;
+      position: fixed;
+      bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
       font-size: 14px;
-      opacity: 0.8;
+      opacity: 0.85;
       animation: bounce 2s infinite;
-      z-index: 3;
+      z-index: 1001;
+      pointer-events: none;
     }
 
     @keyframes bounce {
@@ -292,6 +293,12 @@
       background: rgba(255, 77, 109, 0.9);
     }
 
+    @media (max-width: 768px) {
+  section {
+    background-attachment: scroll; /* CRITICAL */
+  }
+}
+
   </style>
 </head>
 
@@ -301,7 +308,7 @@
     <h2>For Mitthu...</h2>
     <button class="enter-btn" onclick="enterSite()">Click here baby</button>
 </div>
-
+ <div class="hint" id="swipeHint">↓ swipe</div>
 <button id="musicToggle" aria-label="Toggle music">
   🎵
 </button>
@@ -312,7 +319,7 @@
     <div class="content-wrap">
       <h1>We started as strangers.</h1>
     </div>
-    <div class="hint">↓ swipe</div>
+   
   </section>
 
   <section id="section2">
@@ -370,7 +377,14 @@
             window.scrollTo(0, 0);
         }
     }
-
+let hintHidden = false;
+window.addEventListener("scroll", () => {
+  if (!hintHidden && window.scrollY > 10) {
+    const hint = document.getElementById("swipeHint");
+    if (hint) hint.style.opacity = "0";
+    hintHidden = true;
+  }
+});
     const music = document.getElementById("bgMusic");
     const toggle = document.getElementById("musicToggle");
     const proposalSection = document.getElementById("finalSection");
