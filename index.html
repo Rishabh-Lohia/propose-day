@@ -21,6 +21,57 @@
       overflow-x: hidden;
     }
 
+    /* PREVENT SCROLLING UNTIL ENTERED */
+    body.locked {
+        overflow: hidden;
+    }
+
+    /* --- ENTRY SCREEN (NEW) --- */
+    #entry-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #000;
+        z-index: 9999; /* On top of everything */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: opacity 1s ease-out;
+    }
+
+    #entry-screen h2 {
+        font-size: 24px;
+        margin-bottom: 30px;
+        font-weight: 300;
+        letter-spacing: 2px;
+    }
+
+    .enter-btn {
+        background: #ff4d6d;
+        color: white;
+        border: none;
+        padding: 15px 40px;
+        font-size: 18px;
+        border-radius: 50px;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(255, 77, 109, 0.5);
+        animation: pulseBtn 2s infinite;
+        transition: transform 0.3s;
+    }
+
+    .enter-btn:hover {
+        transform: scale(1.1);
+    }
+
+    @keyframes pulseBtn {
+        0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
+        70% { box-shadow: 0 0 0 20px rgba(255, 77, 109, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+    }
+
     /* --- PARALLAX SECTIONS --- */
     section {
       height: 100vh;
@@ -56,7 +107,7 @@
       z-index: 3;
       padding: 20px;
       max-width: 600px;
-	position: relative;
+      position: relative;
     }
 
     /* --- SPECIFIC BACKGROUND IMAGES --- */
@@ -71,24 +122,14 @@
       background-image: url('3rd.jpeg');
     }
     #section4 {
-      background-image: url('4th.JPG');
+      background-image: url('4th.jpg');
     }
     
-    /* Proposal Section - slightly darker bg or a specific photo */
+    /* Proposal Section */
     .proposal-section {
-      
-background-image: url('4th.JPG');
+        background-image: url('4th.jpg');
     }
-    .proposal-section::before { content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6); /* Adjust darkness here */
-      z-index: 1;
- } /* No overlay needed if using gradient */
-
+    
     h1 {
       font-size: 32px;
       line-height: 1.3;
@@ -185,7 +226,7 @@ background-image: url('4th.JPG');
       color: rgba(255, 77, 109, 0.6);
       animation: floatUp 6s linear forwards;
       font-size: 20px;
-	text-shadow: 0 0 5px rgba(255, 77, 109, 0.4);
+      text-shadow: 0 0 5px rgba(255, 77, 109, 0.4);
     }
 
     @keyframes floatUp {
@@ -200,37 +241,46 @@ background-image: url('4th.JPG');
       pointer-events: none;
       z-index: 999;
     }
-#statusMessage {
-  text-shadow: 0 0 10px rgba(0,0,0,0.8);
-  z-index: 10;
-}
-#musicToggle {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.15);
-  color: white;
-  font-size: 20px;
-  backdrop-filter: blur(6px);
-  z-index: 1000;
-  cursor: pointer;
-}
 
-#musicToggle.playing {
-  background: rgba(255, 77, 109, 0.9);
-}
+    #statusMessage {
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      z-index: 10;
+    }
+
+    #musicToggle {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 20px;
+      backdrop-filter: blur(6px);
+      z-index: 1000;
+      cursor: pointer;
+      display: none; /* Hidden initially, shown after entry */
+    }
+
+    #musicToggle.playing {
+      background: rgba(255, 77, 109, 0.9);
+    }
 
   </style>
 </head>
 
-<body>
+<body class="locked">
+
+<div id="entry-screen">
+    <h2>I have something to show you...</h2>
+    <button class="enter-btn" onclick="enterSite()">Tap to Open ❤️</button>
+</div>
 <button id="musicToggle" aria-label="Toggle music">
   🎵
 </button>
+
   <div class="heart-container" id="heartContainer"></div>
 
   <section id="section1">
@@ -244,26 +294,23 @@ background-image: url('4th.JPG');
     <div class="content-wrap">
       <h1>Now you are my life, my heart, my everything.</h1>
       <p>
-
-If my day doesn't start and end along with you, it is a wasted day...<br>
-All I think about is when I'll be with you again...<br>
-You have made my life beautiful....
-</p>
+        If my day doesn't start and end along with you, it is a wasted day...<br>
+        All I think about is when I'll be with you again...<br>
+        You have made my life beautiful....
+      </p>
     </div>
   </section>
 
   <section id="section3">
     <div class="content-wrap">
       <p>My greatest desire is to keep you smiling and happy, baby</p>
-      <h1> Cannot wait to spend the rest of our lives together</h1>	
+      <h1>Cannot wait to spend the rest of our lives together</h1>  
     </div>
   </section>
 
-  
-
   <section class="proposal-section" id="finalSection">
     <div class="content-wrap">
-<p>So tell me, cutie...</p>
+        <p>So tell me, cutie...</p>
       <h1 id="typewriterText"></h1>
       
       <div class="buttons" id="buttonArea">
@@ -272,79 +319,88 @@ You have made my life beautiful....
       </div>
     </div>
   </section>
-<div id="statusMessage" style="position: fixed; bottom: 20px; width: 100%; text-align: center; color: #ff4d6d; font-weight: bold; font-size: 18px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;"></div>
+
+  <div id="statusMessage" style="position: fixed; bottom: 20px; width: 100%; text-align: center; color: #ff4d6d; font-weight: bold; font-size: 18px; pointer-events: none; opacity: 0; transition: opacity 0.3s ease;"></div>
+  
   <canvas class="confetti" id="confetti"></canvas>
-<audio id="bgMusic" loop preload="auto"
-  playsinline>
-  <source src="music.mp3" type="audio/mpeg">
-</audio>
+  
+  <audio id="bgMusic" loop preload="auto" playsinline>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
   <script>
 
-const music = document.getElementById("bgMusic");
-const toggle = document.getElementById("musicToggle");
-const proposalSection = document.getElementById("finalSection");
-const statusMsg = document.getElementById("statusMessage");
+    const music = document.getElementById("bgMusic");
+    const toggle = document.getElementById("musicToggle");
+    const proposalSection = document.getElementById("finalSection");
+    const statusMsg = document.getElementById("statusMessage");
+    const entryScreen = document.getElementById("entry-screen");
 
-let hasSwelled = false;
-let hasStarted = false;
+    // --- NEW: ENTER SITE LOGIC ---
+    function enterSite() {
+        // 1. Play Music
+        music.volume = 0.3;
+        music.play().then(() => {
+            toggle.classList.add("playing");
+        }).catch(err => {
+            console.log("Audio play failed, will wait for interaction", err);
+        });
 
-const observerMusic = new IntersectionObserver(
-  (entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !hasSwelled && hasStarted) {
-        swellMusic();
-        hasSwelled = true;
+        // 2. Fade out entry screen
+        entryScreen.style.opacity = '0';
+        
+        // 3. Remove entry screen from DOM after fade and unlock scroll
+        setTimeout(() => {
+            entryScreen.remove();
+            document.body.classList.remove("locked"); // Allow scrolling now
+            toggle.style.display = "block"; // Show music toggle button
+        }, 1000);
+    }
+
+
+    let hasSwelled = false;
+
+    // Music Swell Logic (Louder at the end)
+    const observerMusic = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasSwelled) {
+            swellMusic();
+            hasSwelled = true;
+          }
+        });
+      },
+      { threshold: 0.6 }
+    );
+
+    observerMusic.observe(proposalSection);
+
+    function swellMusic() {
+      let vol = music.volume;        
+      const target = 0.7;            
+      const step = 0.02;             
+      const interval = 100;          
+
+      const swell = setInterval(() => {
+        if (vol < target) {
+          vol += step;
+          music.volume = Math.min(vol, target);
+        } else {
+          clearInterval(swell);
+        }
+      }, interval);
+    }
+
+    toggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (music.paused) {
+        music.play();
+        toggle.classList.add("playing");
+      } else {
+        music.pause();
+        toggle.classList.remove("playing");
       }
     });
-  },
-  { threshold: 0.6 }
-);
-
-observerMusic.observe(proposalSection);
-
-function swellMusic() {
-  let vol = music.volume;        // current volume (e.g. 0.3)
-  const target = 0.7;            // peak volume for proposal
-  const step = 0.02;             // smoothness
-  const interval = 100;          // speed (ms)
-
-  const swell = setInterval(() => {
-    if (vol < target) {
-      vol += step;
-      music.volume = Math.min(vol, target);
-    } else {
-      clearInterval(swell);
-    }
-  }, interval);
-}
-
-
-
-function startMusic() {
-  if (!hasStarted) {
-   music.volume = 0.3;
-music.play().catch(() => {});
-toggle.classList.add("playing");
-hasStarted = true;
-  }
-}
-
-toggle.addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (music.paused) {
-    music.play();
-    toggle.classList.add("playing");
-  } else {
-    music.pause();
-    toggle.classList.remove("playing");
-  }
-});
-
-/* Start music on first interaction anywhere 
-document.body.addEventListener("click", startMusic, { once: true });
-document.body.addEventListener("touchstart", startMusic, { once: true });*/
-//document.addEventListener("click", startMusic, { once: true });
-document.addEventListener("touchstart", startMusic, { once: true });
 
 
     /* --- 1. FLOATING HEARTS LOGIC --- */
@@ -368,7 +424,7 @@ document.addEventListener("touchstart", startMusic, { once: true });
       }, 7000);
     }
     // Create a heart every 300ms
-   let heartInterval = setInterval(createHeart, 300);
+    let heartInterval = setInterval(createHeart, 300);
 
 
     const messages = [
@@ -395,7 +451,6 @@ document.addEventListener("touchstart", startMusic, { once: true });
         i++;
         setTimeout(typeWriter, 50); // Speed of typing
       } else {
-        // Remove cursor blink effect after typing is done (optional)
         typeWriterElement.style.borderRight = "none";
       }
     }
@@ -470,10 +525,6 @@ document.addEventListener("touchstart", startMusic, { once: true });
 
       // Make the button fade out if she's too good at chasing it (optional)
       if (attempts > 10) noBtn.style.opacity = "0.2";
-/*      attempts++;
-      if (attempts === 3) noBtn.textContent = "nice try 😄";
-      if (attempts === 5) noBtn.textContent = "not happening";
-      if (attempts === 7) noBtn.style.opacity = "0";*/
     }
 
     noBtn.addEventListener("mouseenter", moveNoButton);
@@ -482,10 +533,10 @@ document.addEventListener("touchstart", startMusic, { once: true });
 
     /* --- 4. CONFETTI LOGIC --- */
     function sayYes() {
-clearInterval(heartInterval);
+      clearInterval(heartInterval);
       const heartContainer = document.getElementById("heartContainer");
       if (heartContainer) heartContainer.remove();
-statusMsg.style.opacity = "0";
+      statusMsg.style.opacity = "0";
       startConfetti();
       document.querySelector("#typewriterText").textContent =
         "You just made me the happiest person alive ❤️";
